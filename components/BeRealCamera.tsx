@@ -14,9 +14,10 @@ import {
 } from 'react-native';
 
 import { withNavigation } from "@react-navigation/compat"
-import { RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
+import { BEREALAPI, RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
 import { Camera, PhotoFile, useCameraDevices } from 'react-native-vision-camera';
 import { useIsFocused } from '@react-navigation/native';
+import { File } from 'buffer';
 
 const flashofficon = require('../assets/flashofficon.png')
 const flashonicon = require('../assets/flashonicon.png')
@@ -100,7 +101,7 @@ function CameraBlock({ callback }) {
     )
 }
 
-function CapturedBeReal({ pic1url, pic2url }: any) {
+function CapturedBeReal({ pic1url, pic2url, callback }: any) {
 
     const [sequence, setSequence] = useState([pic1url, pic2url])
     const [hidden, setHidden] = useState(false);
@@ -123,8 +124,10 @@ function CapturedBeReal({ pic1url, pic2url }: any) {
                 }}>
                     <Image style={berealStyles.berealinactive} source={{ uri: 'file://' + sequence[1] }} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ position: "absolute", top: 10, right: 10 }}>
-                        <Text style={{ transform: [{ rotate: "45deg" }], color: "white", fontSize: 20, fontWeight: "bold", padding: 5 }}>+</Text>
+                <TouchableOpacity style={{ position: "absolute", top: 10, right: 10 }} onPress={() => {
+                    callback()
+                }}>
+                    <Text style={{ transform: [{ rotate: "45deg" }], color: "white", fontSize: 20, fontWeight: "bold", padding: 5 }}>+</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -197,12 +200,23 @@ class BeRealCamera extends React.Component<{}, BeRealCameraInterface> {
     async uploadBereal() {
         const token = await AsyncStorage.getItem("@user_token");
 
+        const images: any = []
+        this.state.photos.map((photo) => {
+            images.push({
+                uri: photo.path,
+                name: 'image.jpg',
+                type: 'image/jpeg',
+            })
+        })
+        console.log(images)
+
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
 
         var formdata = new FormData();
-        formdata.append("file", fileInput.files[0]);
-        formdata.append("file", fileInput.files[0]);
+        images.map((file: any) => {
+            formdata.append("file", file)
+        })
 
         var requestOptions = {
             method: 'POST',
@@ -211,9 +225,18 @@ class BeRealCamera extends React.Component<{}, BeRealCameraInterface> {
             redirect: 'follow'
         };
 
-        fetch("localhost:6969/api/bereal/new", requestOptions)
+        fetch(`${BEREALAPI}/api/bereal/new`, requestOptions)
             .then(response => response.json())
-            .then(result => console.log(result))
+            .then(result => {
+                if (result.hasOwnProperty("error")) {
+                    console.log(result["error"])
+                    return;
+                }
+
+                console.log("uploaded bereal");
+                this.props.navigation.goBack()
+
+            })
             .catch(error => console.log('error', error));
     }
 
@@ -232,8 +255,12 @@ class BeRealCamera extends React.Component<{}, BeRealCameraInterface> {
                     <CameraBlock callback={this.setPhoto} />
                     :
                     <View style={{ alignItems: "center", height: "80%" }}>
-                        <CapturedBeReal pic1url={this.state.photos[0].path} pic2url={this.state.photos[1].path} />
-                        <TouchableOpacity style={{ position: "absolute", bottom: 30 }}>
+                        <CapturedBeReal pic1url={this.state.photos[0].path} pic2url={this.state.photos[1].path} callback={() => {
+                            this.setState({ photos: [] })
+                        }} />
+                        <TouchableOpacity style={{ position: "absolute", bottom: 30 }} onPress={() => {
+                            this.uploadBereal();
+                        }}>
                             <Text style={{ color: "white", "fontSize": 50, fontWeight: "900" }}>SEND ►</Text>
                         </TouchableOpacity>
                     </View>

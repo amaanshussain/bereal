@@ -231,6 +231,41 @@ class Timeline extends React.Component<{}, TimelineInterface> {
 
         })
 
+        this.listeners = [
+            this.props.navigation.addListener(
+                'focus',
+                () => {
+                    console.log('just got to timeline')
+                    fetch(`${BEREALAPI}/api/friends/timeline`, requestOptions)
+                        .then(response => response.json())
+                        .then(result => {
+                            this.setState({ timeline: result['bereals'] })
+                        })
+                        .catch(error => console.log('timelineerror2', error));
+                }
+            ),
+            this.props.navigation.addListener(
+                'focus',
+                () => {
+                    console.log('getting my bereal')
+                    fetch(`${BEREALAPI}/api/profile/bereal`, requestOptions)
+                        .then(response => response.json())
+                        .then(result => {
+                            console.log(result)
+                            if (result.hasOwnProperty("error")) {
+                                this.setState({todaysBereal: ["", ""]})
+                                return;
+                            }
+                            this.setState({ todaysBereal: [result.bereal.pics[0], result.bereal.pics[1]] })
+                        })
+                        .catch(error => console.log('berealerror', error));
+
+                }
+            )
+        ]
+        this.getTimeline()
+        this.getMyBeReal()
+
         fetch(`${BEREALAPI}/api/profile/me`, requestOptions)
             .then(response => response.json())
             .then(result => {
@@ -242,42 +277,59 @@ class Timeline extends React.Component<{}, TimelineInterface> {
                     this.setState({ profilePic: image })
                 }
             })
-            .catch(error => console.log('error', error));
+            .catch(error => console.log('profileerror', error));
 
-        fetch(`${BEREALAPI}/api/profile/bereal`, requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                if (result.hasOwnProperty("error")) {
-                    return;
-                }
-                this.setState({ todaysBereal: [result.bereal.pics[0], result.bereal.pics[1]] })
-            })
-            .catch(error => console.log('error', error));
+    }
+
+    async getTimeline() {
+        console.log('getting timeline')
+        const user_token = await AsyncStorage.getItem("@user_token");
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${user_token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
 
         fetch(`${BEREALAPI}/api/friends/timeline`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log('timeline')
-                console.log(result)
                 this.setState({ timeline: result['bereals'] })
             })
-            .catch(error => console.log('error', error));
-
-        this.props.navigation.addListener(
-            'focus',
-            () => {
-                fetch(`${BEREALAPI}/api/friends/timeline`, requestOptions)
-                    .then(response => response.json())
-                    .then(result => {
-                        console.log('timeline')
-                        console.log(result)
-                        this.setState({ timeline: result['bereals'] })
-                    })
-                    .catch(error => console.log('error', error));
-            }
-        );
+            .catch(error => console.log('timelineerror1', error));
 
     }
+
+    async getMyBeReal() {
+        console.log('getting timeline')
+        const user_token = await AsyncStorage.getItem("@user_token");
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${user_token}`);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch(`${BEREALAPI}/api/profile/bereal`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                if (result.hasOwnProperty("error")) {
+                    this.setState({todaysBereal: ["", ""]})
+                    return;
+                }
+                this.setState({ todaysBereal: [result.bereal.pics[0], result.bereal.pics[1]] })
+            })
+            .catch(error => console.log('berealerror', error));
+
+    }
+
+
 
 
     render(): React.ReactNode {
@@ -343,8 +395,8 @@ class Timeline extends React.Component<{}, TimelineInterface> {
                         this.state.timeline.length == 0 ?
                             <View style={[berealStyles.lateBerealCont, { display: !shown ? "flex" : "none", marginTop: "40%" }]}>
                                 <Text style={berealStyles.lateBerealMain}>Uh oh, it's empty!</Text>
-                                <Text style={[berealStyles.lateBerealSecond, {textAlign: "center"}]}>Looks like none of your friends have uploaded a BeReal. Post a BeReal to get them started!</Text>
-                                <TouchableOpacity style={berealStyles.lateBerealButton}>
+                                <Text style={[berealStyles.lateBerealSecond, { textAlign: "center" }]}>Looks like none of your friends have uploaded a BeReal. Post a BeReal to get them started!</Text>
+                                <TouchableOpacity style={berealStyles.lateBerealButton}  onPress={() => this.props.navigation.navigate("BeRealCamera")}>
                                     <Text style={berealStyles.lateBerealText}>Post a BeReal.</Text>
                                 </TouchableOpacity>
                             </View>

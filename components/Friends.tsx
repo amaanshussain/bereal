@@ -80,7 +80,7 @@ async function requestFriend(email: string, callback: Function) {
         redirect: 'follow'
     };
 
-    fetch(`${BEREALAPI}:6969/api/friends/request`, requestOptions)
+    fetch(`${BEREALAPI}/api/friends/request`, requestOptions)
         .then(response => response.json())
         .then(result => callback(result))
         .catch(error => callback(error));
