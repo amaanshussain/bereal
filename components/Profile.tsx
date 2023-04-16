@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from "@react-navigation/compat"
-import { RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
+import { BEREALAPI, RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
 
 const backicon = require('../assets/backicon.png')
 const signouticon = require('../assets/signouticon.png')
@@ -61,7 +61,7 @@ class Profile extends React.Component<{}, ProfileInterface> {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:6969/api/profile/me", requestOptions)
+        fetch(`${BEREALAPI}/api/profile/me`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 console.log(result)

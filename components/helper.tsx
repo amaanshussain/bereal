@@ -33,3 +33,5 @@ export async function refreshToken(callback: Function) {
 export function multiStoreData(set: [string, string][]) {
     return AsyncStorage.multiSet(set)
 }
+
+export const BEREALAPI = 'https://0a5e-2600-1702-5282-f080-e95a-4140-2e32-1b3a.ngrok-free.app'

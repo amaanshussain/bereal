@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from "@react-navigation/compat"
-import { RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
+import { BEREALAPI, RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
 
 const backicon = require('../assets/backicon.png')
 const requestsicon = require('../assets/requestsicon.png')
@@ -33,7 +33,7 @@ async function getFriendById(uid: string, callback: Function) {
         redirect: 'follow'
     };
 
-    fetch(`http://localhost:6969/api/profile/${uid}/info`, requestOptions)
+    fetch(`${BEREALAPI}/api/profile/${uid}/info`, requestOptions)
         .then(response => response.json())
         .then(result => {
             callback(result)
@@ -56,7 +56,7 @@ async function searchEmail(email: string, callback: Function) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/profile/search", requestOptions)
+    fetch(`${BEREALAPI}/api/profile/search`, requestOptions)
         .then(response => response.json())
         .then(result => callback(result))
         .catch(error => callback(error));
@@ -80,7 +80,7 @@ async function requestFriend(email: string, callback: Function) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/friends/request", requestOptions)
+    fetch(`${BEREALAPI}:6969/api/friends/request`, requestOptions)
         .then(response => response.json())
         .then(result => callback(result))
         .catch(error => callback(error));
@@ -104,7 +104,7 @@ async function deleteFriend(fid: string) {
         redirect: 'follow'
     };
 
-    await fetch("http://localhost:6969/api/friends/delete", requestOptions)
+    await fetch(`${BEREALAPI}/api/friends/delete`, requestOptions)
         .then(response => response.json())
         .then(result => { })
         .catch(error => { });
@@ -220,7 +220,7 @@ class Friends extends React.Component<{}, FriendsInterface> {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:6969/api/friends/friends", requestOptions)
+        fetch(`${BEREALAPI}/api/friends/friends`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 callback(result)

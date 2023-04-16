@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from "@react-navigation/compat"
-import { RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
+import { BEREALAPI, RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
 
 const backicon = require('../assets/backicon.png')
 const refreshicon = require('../assets/refreshicon.png')
@@ -33,7 +33,7 @@ async function getFriendById(uid: string, callback: Function) {
         redirect: 'follow'
     };
 
-    fetch(`http://localhost:6969/api/profile/${uid}/info`, requestOptions)
+    fetch(`${BEREALAPI}/api/profile/${uid}/info`, requestOptions)
         .then(response => response.json())
         .then(result => {
             callback(result)
@@ -53,7 +53,7 @@ async function getOutgoingRequests(callback: Function) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/friends/outgoing", requestOptions)
+    fetch(`${BEREALAPI}/api/friends/outgoing`, requestOptions)
         .then(response => response.json())
         .then(result => callback(result))
         .catch(error => callback(error));
@@ -71,7 +71,7 @@ async function getIncomingRequests(callback: Function) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/friends/incoming", requestOptions)
+    fetch(`${BEREALAPI}/api/friends/incoming`, requestOptions)
         .then(response => response.json())
         .then(result => callback(result))
         .catch(error => callback(error));
@@ -95,7 +95,7 @@ async function deleteRequest(fid: string) {
         redirect: 'follow'
     };
 
-    await fetch("http://localhost:6969/api/friends/deleterequest", requestOptions)
+    await fetch(`${BEREALAPI}/api/friends/deleterequest`, requestOptions)
         .then(response => response.json())
         .then(result => { })
         .catch(error => { });
@@ -119,7 +119,7 @@ async function acceptRequest(fid: string) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/friends/accept", requestOptions)
+    fetch(`${BEREALAPI}/api/friends/accept`, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -143,7 +143,7 @@ async function rejectRequest(fid: string) {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:6969/api/friends/reject", requestOptions)
+    fetch(`${BEREALAPI}/api/friends/reject`, requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));

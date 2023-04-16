@@ -10,6 +10,7 @@ import Profile from './components/Profile';
 import Friends from './components/Friends';
 import Requests from './components/Requests';
 import CreateUser from './components/CreateUser';
+import BeRealCamera from './components/BeRealCamera';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ function App(): JSX.Element {
         <Stack.Screen
           name='CreateUser'
           component={CreateUser}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='BeRealCamera'
+          component={BeRealCamera}
           options={{ headerShown: false }}
         />
 

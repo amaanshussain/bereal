@@ -12,6 +12,7 @@ import {
 import { withNavigation } from "@react-navigation/compat"
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BEREALAPI } from './helper';
 
 interface LoginInterface {
     email: string,
@@ -59,7 +60,7 @@ class Login extends React.Component<{}, LoginInterface> {
                 body: raw,
                 redirect: 'follow'
             };
-            fetch("http://localhost:6969/api/login/token", requestOptions)
+            fetch(`${BEREALAPI}/api/login/token`, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     if (result.hasOwnProperty("error")) {
@@ -96,7 +97,7 @@ class Login extends React.Component<{}, LoginInterface> {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:6969/api/login/refresh", requestOptions)
+        fetch(`${BEREALAPI}/api/login/refresh`, requestOptions)
             .then(response => response.json())
             .then(result => callback(result))
             .catch(error => console.log('error', error));
@@ -109,7 +110,7 @@ class Login extends React.Component<{}, LoginInterface> {
 
 
     submitLogin() {
-        fetch('http://localhost:6969/api/login', {
+        fetch(`${BEREALAPI}/api/login`, {
             method: 'POST',
             headers: {
                 'Accept': "application/json",

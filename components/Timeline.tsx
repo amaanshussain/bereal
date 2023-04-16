@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { withNavigation } from "@react-navigation/compat"
-import { RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
+import { BEREALAPI, RefreshTokenInterface, multiStoreData, refreshToken } from './helper';
 
 
 const commenticon = require('../assets/commenticon.png')
@@ -26,10 +26,11 @@ interface BeRealInterface {
     displayname: string,
     pic1url: string,
     pic2url: string,
-    shown: boolean
+    shown: boolean,
+    navigation: any
 }
 
-const BeReal = ({ profile, displayname, pic1url, pic2url, shown }: BeRealInterface) => {
+const BeReal = ({ profile, displayname, pic1url, pic2url, shown, navigation }: BeRealInterface) => {
 
     const [sequence, setSequence] = useState([pic1url, pic2url])
     const [hidden, setHidden] = useState(false);
@@ -67,7 +68,9 @@ const BeReal = ({ profile, displayname, pic1url, pic2url, shown }: BeRealInterfa
                     <Image style={berealStyles.lateBerealIcon} source={hiddenicon} />
                     <Text style={berealStyles.lateBerealMain}>Post to view</Text>
                     <Text style={berealStyles.lateBerealSecond}>To view your friends' BeReal, share yours with them.</Text>
-                    <TouchableOpacity style={berealStyles.lateBerealButton}>
+                    <TouchableOpacity style={berealStyles.lateBerealButton} onPress={() => {
+                        navigation.navigate("BeRealCamera")
+                    }}>
                         <Text style={berealStyles.lateBerealText}>Post a late BeReal.</Text>
                     </TouchableOpacity>
                 </View>
@@ -228,7 +231,7 @@ class Timeline extends React.Component<{}, TimelineInterface> {
 
         })
 
-        fetch("http://localhost:6969/api/profile/me", requestOptions)
+        fetch(`${BEREALAPI}/api/profile/me`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 const email = result.email;
@@ -241,7 +244,7 @@ class Timeline extends React.Component<{}, TimelineInterface> {
             })
             .catch(error => console.log('error', error));
 
-        fetch("http://localhost:6969/api/profile/bereal", requestOptions)
+        fetch(`${BEREALAPI}/api/profile/bereal`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 if (result.hasOwnProperty("error")) {
@@ -251,7 +254,7 @@ class Timeline extends React.Component<{}, TimelineInterface> {
             })
             .catch(error => console.log('error', error));
 
-        fetch("http://localhost:6969/api/friends/timeline", requestOptions)
+        fetch(`${BEREALAPI}/api/friends/timeline`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 console.log('timeline')
@@ -263,7 +266,7 @@ class Timeline extends React.Component<{}, TimelineInterface> {
         this.props.navigation.addListener(
             'focus',
             () => {
-                fetch("http://localhost:6969/api/friends/timeline", requestOptions)
+                fetch(`${BEREALAPI}/api/friends/timeline`, requestOptions)
                     .then(response => response.json())
                     .then(result => {
                         console.log('timeline')
@@ -331,6 +334,7 @@ class Timeline extends React.Component<{}, TimelineInterface> {
                                     pic1url={bereal.pic1url}
                                     pic2url={bereal.pic2url}
                                     shown={shown}
+                                    navigation={this.props.navigation}
                                 />
                             )
                         })
