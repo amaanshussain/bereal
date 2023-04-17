@@ -3,7 +3,7 @@
 
 A week-long mini project replicating the popular app BeReal.
 
-This project utilizes both this [repository](https://github.com/washedBrownBoy/bereal) and my [BeReal](https://github.com/washedBrownBoy/bereal-backend) repository. The front-end is built on a React Native framework designed for both iOS and Android while the backend is hosted through an Express.js app. 
+This project utilizes both this [repository](https://github.com/washedBrownBoy/bereal) and my [bereal-backend](https://github.com/washedBrownBoy/bereal-backend) repository. The front-end is built on a React Native framework designed for both iOS and Android while the backend is hosted through an Express.js app. 
 ## Features
 
 - Upload images from front and back camera
@@ -13,7 +13,7 @@ This project utilizes both this [repository](https://github.com/washedBrownBoy/b
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your express.js .env file
+To run this project, you will need to add the following environment variables to your backend .env file
 
 | Name |  Description                |
 | :-------- | :------------------------- |
