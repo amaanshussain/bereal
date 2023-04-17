@@ -36,13 +36,13 @@ To run this project, you will need to add the following environment variables to
 
 
 ### Send friend request
-![](https://cdn.discordapp.com/attachments/579783583376343063/1097400674108588082/addfriend.gif)
+https://cdn.discordapp.com/attachments/579783583376343063/1097400674108588082/addfriend.gif
 
 ### Sign in and accept friend request
-![](https://cdn.discordapp.com/attachments/579783583376343063/1097400673592692827/signinandaccept.gif)
+https://cdn.discordapp.com/attachments/579783583376343063/1097400673592692827/signinandaccept.gif
 
 ### Post BeReal
-![](https://cdn.discordapp.com/attachments/579783583376343063/1097400675152973844/postnotempty.gif)
+https://cdn.discordapp.com/attachments/579783583376343063/1097400675152973844/postnotempty.gif
 
 
 ## Things to Do
