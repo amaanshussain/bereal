@@ -3,7 +3,7 @@
 
 A week-long mini project replicating the popular app BeReal.
 
-This project utilizes both this [repository](https://github.com/washedBrownBoy/berealclone) and my [BeReal](https://github.com/washedBrownBoy/bereal) repository. The front-end is built on a React Native framework designed for both iOS and Android while the backend is hosted through an Express.js app. 
+This project utilizes both this [repository](https://github.com/washedBrownBoy/bereal) and my [BeReal](https://github.com/washedBrownBoy/bereal-backend) repository. The front-end is built on a React Native framework designed for both iOS and Android while the backend is hosted through an Express.js app. 
 ## Features
 
 - Upload images from front and back camera
